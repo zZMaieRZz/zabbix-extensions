@@ -14,7 +14,7 @@
             <description>Monitor block device statistics using iostat.&#13;
 &#13;
 Sourcecode &amp; Documentation/Updates/Bugtracker:&#13;
-https://github.com/lesovsky/zabbix-extensions</description>
+https://github.com/zZMaieRZz/zabbix-extensions</description>
             <groups>
                 <group>
                     <name>Templates</name>
@@ -84,7 +84,7 @@ https://github.com/lesovsky/zabbix-extensions</description>
                         <conditions>
                             <condition>
                                 <macro>{#HARDDISK}</macro>
-                                <value>^((xvd|sd|hd|vd)[a-z]|md[0-9]+|(nvme[0-9]+n[0-9]+))</value>
+                                <value>^((xvd|sd|hd|vd)[a-z]|(vg[0-9]+-[a-z]+)|md[0-9]+|(nvme[0-9]+n[0-9]+))</value>
                                 <formulaid>A</formulaid>
                             </condition>
                         </conditions>
@@ -164,13 +164,13 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             </master_item>
                         </item_prototype>
                         <item_prototype>
-                            <name>Disk {#HARDDISK} read operations per second</name>
+                            <name>Disk {#HARDDISK} number of read requests per second</name>
                             <type>DEPENDENT</type>
                             <key>iostat.summary[{#HARDDISK},r/s]</key>
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>ops</units>
-                            <description>The number of read requests per second.</description>
+                            <description>Количество операций чтения в секунду</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -193,7 +193,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>kB/s</units>
-                            <description>The number of kbytes read from the device per second.</description>
+                            <description>Количество килобайт, прочитанных с диска в секунду.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -216,7 +216,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>rps</units>
-                            <description>The number of read requests merged per second that were queued to the hard disk.</description>
+                            <description>Количество обращений, которые были перенаправлены в очередь на устройстве (read request merged per second).</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -285,7 +285,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>ops</units>
-                            <description>The number of write requests per second.</description>
+                            <description>Количество операций записи в секунду</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -308,7 +308,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>kB/s</units>
-                            <description>The number of kilobytes write to the device per second.</description>
+                            <description>Количество килобайт, записанных на диск в секунду.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -331,7 +331,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>rps</units>
-                            <description>The number of write requests merged per second that were queued to the hard disk.</description>
+                            <description>Количество обращений, которые были перенаправлены в очередь на устройстве (write request merged per second).</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
