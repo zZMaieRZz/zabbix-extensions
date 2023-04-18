@@ -97,11 +97,11 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                         <item_prototype>
                             <name>Disk {#HARDDISK} average queue size</name>
                             <type>DEPENDENT</type>
-                            <key>iostat.summary[{#HARDDISK},avgqu-sz]</key>
+                            <key>iostat.summary[{#HARDDISK},aqu-sz]</key>
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>req</units>
-                            <description>The average queue length of the requests that were issued to the device.</description>
+                            <description>Длина очереди на устройстве.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -110,7 +110,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <preprocessing>
                                 <step>
                                     <type>JSONPATH</type>
-                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['avgqu-sz'].first()</params>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['aqu-sz'].first()</params>
                                 </step>
                             </preprocessing>
                             <master_item>
@@ -118,36 +118,13 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             </master_item>
                         </item_prototype>
                         <item_prototype>
-                            <name>Disk {#HARDDISK} average requests size</name>
+                            <name>Disk {#HARDDISK} average service time for each operation in milliseconds</name>
                             <type>DEPENDENT</type>
-                            <key>iostat.summary[{#HARDDISK},avgrq-sz]</key>
-                            <delay>0</delay>
-                            <value_type>FLOAT</value_type>
-                            <units>sector/request</units>
-                            <description>The average size (in sectors) of the requests that were issued to the device.</description>
-                            <applications>
-                                <application>
-                                    <name>Iostat</name>
-                                </application>
-                            </applications>
-                            <preprocessing>
-                                <step>
-                                    <type>JSONPATH</type>
-                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['avgrq-sz'].first()</params>
-                                </step>
-                            </preprocessing>
-                            <master_item>
-                                <key>iostat.summary</key>
-                            </master_item>
-                        </item_prototype>
-                        <item_prototype>
-                            <name>Disk {#HARDDISK} await</name>
-                            <type>DEPENDENT</type>
-                            <key>iostat.summary[{#HARDDISK},await]</key>
+                            <key>iostat.summary[{#HARDDISK},svctm]</key>
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>ms</units>
-                            <description>The average time (in milliseconds) for I/O requests issued to the device to be served. This includes the time spent by the requests in queue and the time spent servicing them.</description>
+                            <description>Cреднее время обслуживания для каждой операции в миллисекундах.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -156,7 +133,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <preprocessing>
                                 <step>
                                     <type>JSONPATH</type>
-                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['await'].first()</params>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['svctm'].first()</params>
                                 </step>
                             </preprocessing>
                             <master_item>
@@ -180,6 +157,52 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                                 <step>
                                     <type>JSONPATH</type>
                                     <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['r/s'].first()</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>iostat.summary</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Disk {#HARDDISK} percentage of read accesses that were queued on the device</name>
+                            <type>DEPENDENT</type>
+                            <key>iostat.summary[{#HARDDISK},rrqm]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>ops</units>
+                            <description>Процент обращений на чтение, которые были перенаправлены в очередь на устройстве</description>
+                            <applications>
+                                <application>
+                                    <name>Iostat</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['rrqm'].first()</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>iostat.summary</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Disk {#HARDDISK} average size of read operations</name>
+                            <type>DEPENDENT</type>
+                            <key>iostat.summary[{#HARDDISK},rareq-sz]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>ops</units>
+                            <description>Средний размер операций чтения</description>
+                            <applications>
+                                <application>
+                                    <name>Iostat</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['rareq-sz'].first()</params>
                                 </step>
                             </preprocessing>
                             <master_item>
@@ -239,7 +262,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>ms</units>
-                            <description>The average time (in milliseconds) for read requests issued to the device to be served. This includes the time spent by the requests in queue and  the  time  spent servicing them.</description>
+                            <description>Среднее время ожидания для операций чтения.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -262,7 +285,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>%</units>
-                            <description>Percentage of CPU time during which I/O requests were issued to the device (bandwidth utilization for the device). Device saturation  occurs  when  this  value  is close to 100%.</description>
+                            <description>Процент использования устройства (от 0 до 100).</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -295,6 +318,52 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                                 <step>
                                     <type>JSONPATH</type>
                                     <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['w/s'].first()</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>iostat.summary</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Disk {#HARDDISK} percentage of write accesses that were queued on the device</name>
+                            <type>DEPENDENT</type>
+                            <key>iostat.summary[{#HARDDISK},wrqm]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>ops</units>
+                            <description>Процент обращений на запись, которые были перенаправлены в очередь на устройстве</description>
+                            <applications>
+                                <application>
+                                    <name>Iostat</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['wrqm'].first()</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>iostat.summary</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Disk {#HARDDISK} average size of write operations</name>
+                            <type>DEPENDENT</type>
+                            <key>iostat.summary[{#HARDDISK},wareq-sz]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>ops</units>
+                            <description>Средний размер операций записи</description>
+                            <applications>
+                                <application>
+                                    <name>Iostat</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..disk[?(@.disk_device=='{#HARDDISK}')].['wareq-sz'].first()</params>
                                 </step>
                             </preprocessing>
                             <master_item>
@@ -354,7 +423,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                             <delay>0</delay>
                             <value_type>FLOAT</value_type>
                             <units>ms</units>
-                            <description>The  average time (in milliseconds) for write requests issued to the device to be served. This includes the time spent by the requests in queue and  the  time  spent servicing them.</description>
+                            <description>Среднее время ожидания для операций записи.</description>
                             <applications>
                                 <application>
                                     <name>Iostat</name>
@@ -380,7 +449,7 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                                     <color>C80000</color>
                                     <item>
                                         <host>Iostat-Disk-Utilization-Template</host>
-                                        <key>iostat.summary[{#HARDDISK},await]</key>
+                                        <key>sum(iostat.summary[{#HARDDISK},r_await],iostat.summary[{#HARDDISK},w_await])/2</key>
                                     </item>
                                 </graph_item>
                                 <graph_item>
@@ -431,15 +500,21 @@ Adjust filters to allow all discovered devices by completely removing it or narr
                                     <yaxisside>RIGHT</yaxisside>
                                     <item>
                                         <host>Iostat-Disk-Utilization-Template</host>
-                                        <key>iostat.summary[{#HARDDISK},avgqu-sz]</key>
+                                        <key>iostat.summary[{#HARDDISK},aqu-sz]</key>
                                     </item>
                                 </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>Disk {#HARDDISK} IOPS</name>
+                            <ymin_type_1>FIXED</ymin_type_1>
+                            <graph_items>
                                 <graph_item>
-                                    <sortorder>1</sortorder>
-                                    <color>0000BB</color>
+                                    <color>BB0000</color>
+                                    <yaxisside>RIGHT</yaxisside>
                                     <item>
                                         <host>Iostat-Disk-Utilization-Template</host>
-                                        <key>iostat.summary[{#HARDDISK},avgrq-sz]</key>
+                                        <key>sum(iostat.summary[{#HARDDISK},r/s],iostat.summary[{#HARDDISK},w/s])</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
